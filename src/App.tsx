@@ -1,9 +1,10 @@
 /* eslint-disable react/no-array-index-key */
 
 import React, { useState } from 'react';
+import Section from './components/Section';
 import dummyJson from './dummy.json';
 
-type Json = Record<string, unknown>;
+export type Json = Record<string, unknown>;
 
 function App() {
 	const [dummy] = useState(dummyJson);
@@ -13,17 +14,13 @@ function App() {
 
 	return (
 		<div>
-			<main className="p-4">
+			<main>
 				{dummy.map((data: Json, i: number) => {
 					return (
-						<div key={`data-${i}`}>
+						<div key={`data-${i}`} className="grid grid-cols-rows md:grid-cols-table gap-x-2 p-4">
 							{Object.keys(data).map((e: string) =>
 								(isArray(data[e]) || (
-									<p key={`dummy-${e.toString()}`}>
-										{e}
-										{': '}
-										{data[e]}
-									</p>
+									<Section key={`dummy-${e.toString()}`} _key={e} value={data[e]} />
 								)))}
 						</div>
 					);
