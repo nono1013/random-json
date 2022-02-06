@@ -1,26 +1,28 @@
 import React from 'react';
+import { JsonKV } from '../types';
+import { IdEditor } from './editors/IdEditor';
 import { StringEditor } from './editors/StringEditor';
 
 interface Props {
-	_key: string;
-	value: any;
+	kv: JsonKV;
 }
 
-const getEditor = (obj: unknown) => {
-	console.log(Object.prototype.toString.call(obj));
-	switch (Object.prototype.toString.call(obj)) {
-	case '[object String]': return <StringEditor value={obj as string} />;
-	default: return null;
+const getEditor = (kv: JsonKV) => {
+	if (kv.type === 'id') {
+		return <IdEditor value={kv.value as string} />;
+	} if (kv.type === 'text') {
+		return <StringEditor value={kv.value as string} />;
 	}
+	return null;
 };
 
-function Section({ _key, value }: Props) {
+function Section({ kv }: Props) {
 	return (
 		<>
-			<p className="text-gray-700">{ _key }</p>
-			<p className="">{ value.toString() }</p>
+			<p className="text-gray-700">{ kv.key }</p>
+			<p className="">{ kv.value.toString() }</p>
 			<p className="" />
-			<p className="w-full">{ getEditor(value) }</p>
+			<p className="w-full">{ getEditor(kv) }</p>
 		</>
 	);
 }
