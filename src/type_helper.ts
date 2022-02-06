@@ -3,7 +3,8 @@ import { JsonKV } from './types';
 
 export const isEmail = (str: string): boolean => {
 	// eslint-disable-next-line no-useless-escape
-	if (/^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/.test(str)) {
+	const mailformat = /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/;
+	if (str.match(mailformat)) {
 		return true;
 	}
 	return false;
