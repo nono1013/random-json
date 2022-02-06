@@ -3,8 +3,8 @@ import { JsonKV } from './types';
 
 export const isEmail = (str: string): boolean => {
 	// eslint-disable-next-line no-useless-escape
-	const mailformat = /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/;
-	if (str.match(mailformat)) {
+	const regexExp = /^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?(?:\.[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?)*$/gi;
+	if (regexExp.test(str)) {
 		return true;
 	}
 	return false;
@@ -37,7 +37,7 @@ export const toType = (key: string, value: any): JsonKV | null => {
 	return null;
 };
 
-export const jsonTextToType = (str: string) => {
+export const jsonTextToType = async (str: string) => {
 	const jsonArr = JSON.parse(str);
 	return jsonArr.flatMap((jsonObj: any) =>	Object.keys(jsonObj).map((key: string) => toType(key, jsonObj[key])).filter(e => e !== null));
 };

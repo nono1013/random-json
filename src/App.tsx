@@ -13,7 +13,7 @@ function App() {
 
 	useEffect(() => {
 		if (jsonStr) {
-			setJson(jsonTextToType(jsonStr));
+			jsonTextToType(jsonStr).then(value => setJson(value));
 		}
 	}, [jsonStr]);
 
@@ -29,14 +29,14 @@ function App() {
 
 	const openFile = async (e: ChangeEvent<HTMLInputElement>) => {
 		e.preventDefault();
+		setJson(null);
+		setJsonStr(null);
 		const reader = new FileReader();
 		reader.onload = async (e) => {
 			const text = (e.target?.result);
 			setJsonStr(text as string);
 		};
 		if (e.target && e.target.files) {
-			setJson(null);
-			setJsonStr(null);
 			reader.readAsText(e.target.files[0]);
 		}
 	};
