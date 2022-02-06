@@ -11,13 +11,19 @@ const toType = (key: string, value: any): JsonKV | null => {
 	if (key === 'id' || key === '_id') {
 		return { type: 'id', key, value };
 	}
-	switch (type) {
-	case 'string':
+	if (type === 'string') {
+		if ((value as string).length > 255) {
+			return { type: 'textarea', key, value };
+		}
 		return { type: 'text', key, value };
-	case 'number':
-		return { type: 'number', key, value };
-	default: return null;
 	}
+	if (type === 'number') {
+		return { type: 'number', key, value };
+	}
+	if (type === 'boolean') {
+		return { type: 'boolean', key, value };
+	}
+	return null;
 };
 
 const jsonTextToType = (str: string) => {
@@ -34,7 +40,7 @@ function App() {
 				<div className="grid grid-cols-rows md:grid-cols-table gap-x-2 p-4">
 					{dummy.map((data: JsonKV, i: number) => {
 						return (
-							<Section key={`dummy-${i}-${data.key}-${data.value}`} kv={data} />
+							<Section key={`dummy-${i}-${data.key}-${data.value}`} kv={data} index={i} />
 						);
 					})}
 				</div>
